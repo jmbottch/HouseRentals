@@ -10,35 +10,41 @@ const db = sql.createConnection({
 });
 
 module.exports = {
-    list() { //deze werkt
+    list(req, res) { //deze werkt
         let sql = 'SELECT * FROM appartments'
         db.query(sql, (err, result) => {
             if(err) throw (err)
             else {
-                res.statusCode(200).send(result)
+                res.send(result)
             }
         })
 
     },
     single(req) { //deze geen idee
-        let sql = 'select * FROM appartments WHERE id=' + req.params.id
+        let sql = 'SELECT * FROM appartments WHERE id=' + req.params.id
         db.query(sql, (err, result) => {
             if(err) throw err
             else{
-                console.log(result)
+                res.send(result)
             }
         })
     },
-    create(req,res) {
+    create(req,res) { //hier klopt waarschijnlijk geen hol van
         var appartment = {
             title : req.body.title,
             city : req.body.city,
             street : req.body.street,
             housenumber : req.body.housenumber,
             postalcode: req.body.postalcode,
-            reservations : [req.body.reservation]
+            owner: req.body.owner
         }
-        db.query()
+        let sql = 'INSERT INTO appartments ( `' + appartment.title + '`, `' + appartment.city + '`, `' + appartment.street + '`, `' + appartment.housenumber + '`, `' + appartment.postalcode + '`, `' + appartment.owner + '`)'
+        db.query(sql, (err, result) => {
+            if(err) throw err
+            else {
+                res.send(result, 'Appartment created')
+            }
+        })
     },
     edit() {
 

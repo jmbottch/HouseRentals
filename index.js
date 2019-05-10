@@ -39,11 +39,19 @@ app.get('/createdb', (req, res) => {
 })
 
 //create users Table
-app.get('/createTable', (req, res) => {
-    let sql = 'CREATE TABLE users(id int AUTO_INCREMENT, email VARCHAR(255), password VARCHAR(255), phonenumber VARCHAR(255), firstname VARCHAR(255), lastname VARCHAR(255), city VARCHAR(255), street VARCHAR(255), housenumber VARCHAR(255), postalcode VARCHAR(255), )'
+app.get('/createUsersTable', (req, res) => {
+    let sql = 'CREATE TABLE users(id INTEGER AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255), password VARCHAR(255), phonenumber VARCHAR(255), firstname VARCHAR(255), lastname VARCHAR(255), city VARCHAR(255), street VARCHAR(255), housenumber VARCHAR(255), postalcode VARCHAR(255))'
     db.query(sql, (err, result) => {
-        if(err) throw (err)
+        if(err) throw err
         res.send('users table created')
+    })
+})
+
+app.get('/createAppartmentsTable', (req, res) => {
+    let sql = 'CREATE TABLE appartments(id INTEGER AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), city VARCHAR(255), street VARCHAR(255), housenumber VARCHAR(255), postalcode VARCHAR(255))'
+    db.query(sql, (err, result) => {
+        if(err) throw err
+        res.send('appartments table created')
     })
 })
 
