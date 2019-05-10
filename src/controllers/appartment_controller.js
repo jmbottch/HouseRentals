@@ -15,7 +15,7 @@ module.exports = {
         db.query(sql, (err, result) => {
             if(err) throw (err)
             else {
-                res.statusCode(200).send('Appartments returned')
+                res.statusCode(200).send(result)
             }
         })
 
