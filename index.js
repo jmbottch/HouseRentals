@@ -12,7 +12,7 @@ const db = sql.createConnection({
     host : 'localhost',
     user : 'rental',
     password : 'localpassword',
-    database: 'verhuur'
+    database: 'rental'
 });
 
 //Connect to the db
@@ -39,13 +39,29 @@ app.get('/createdb', (req, res) => {
 })
 
 //create users Table
-app.get('/createTable', (req, res) => {
-    let sql = 'CREATE TABLE users(id int AUTO_INCREMENT, email VARCHAR(255), password VARCHAR(255), phonenumber VARCHAR(255), firstname VARCHAR(255), lastname VARCHAR(255), city VARCHAR(255), street VARCHAR(255), housenumber VARCHAR(255), postalcode VARCHAR(255), )'
+app.get('/createUsersTable', (req, res) => {
+    let sql = 'CREATE TABLE users(userid INT AUTO_INCREMENT UNIQUE, email VARCHAR(255) UNIQUE, password VARCHAR(255), phonenumber VARCHAR, firstname VARCHAR(255), lastname VARCHAR(255), city VARCHAR(255), address VARCHAR(255), postalcode VARCHAR (255), CONSTRAINT PK_userid PRIMARY KEY CLUSTERED)'
     db.query(sql, (err, result) => {
-        if(err) throw (err)
+        if(err) throw err
         res.send('users table created')
     })
 })
+
+app.get('/createAppartmentsTable', (req, res) => {
+    let sql = 'CREATE TABLE appartments(appartmentid INT AUTO_INCREMENT PRIMARY KEY UNIQUE, title VARCHAR(255) UNIQUE, city VARCHAR(255), address VARCHAR(255), postalcode VARCHAR(255), owner_userid INTEGER)'
+    db.query(sql, (err, result) => {
+        if(err) throw err
+        res.send('appartments table created')
+    })
+})
+
+app.get('/createReservationTable', (req, res) => {
+    let sql = 'CREATE TABLE reservations(reservationid INTEGER AUTO_INCREMENT UNIQUE, appertmentId INTEGER(20), userid INTEGER(20), start_date DATETIME, end_date DATETIME, CONSTRAINT PK_reservationid PRIMARY KEY CLUSTERED)'
+    db.query(sql, (err, result) => {
+        if (err) throw err
+        res.send('reservations table created')
+    })
+} )
 
 //Body parser middleware
 app.use(bodyParser.json()); 

@@ -11,7 +11,17 @@ module.exports = {
     login() {
 
     },
-    validateToken() {
-
+    validateToken(req, res, next) {
+        if(!req.headers.authorization) {
+            return res.status(401).send({Error : 'No Authorization provided'})
+        }
+        let token = req.headers.authorization.split(' ')[1]
+        if(token === null) {
+            return res.status(401).send({Error : 'No token provided'})
+        }
+        jwt.verify(token, config.secret, function(err, decoded) {
+            if(err) return res.status(401).send({Error : 'Token is invalid'})
+            if(decoded) next();
+        })
     }
 }

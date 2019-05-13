@@ -23,15 +23,13 @@ describe('the appartmentController ', () => {
 
     // })
 
-    // testAppartment = new Appartment ({
-    //     title : 'Test Appartment',
-    //     city : 'New York City',
-    //     street: 'Wall Street',
-    //     housenumber: '420',
-    //     postalcode: '1940NC',
-    //     reservations : [],
-    //     owner : testUser
-    // })
+    testAppartment = new Appartment ({
+        title : 'Test Appartment',
+        city : 'New York City',
+        address: 'Wall Street 420',
+        postalcode: '1940NC',
+        owner : testUser
+    })
     const sql = require('mysql')
     //Create connection
     const db = sql.createConnection({
@@ -43,6 +41,11 @@ describe('the appartmentController ', () => {
 
     it('can get a list of appartments', function(done) {
         done()
+    })
+
+    it('can create a new appartment', function(done) {
+        request(app)
+        .post('testAppartment')
     })
 
 })
