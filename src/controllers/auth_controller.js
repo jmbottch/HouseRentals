@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../../config/auth_config');
 
+
 function login(req, res) {
     User.findOne( { name: req.body.name } )
     .then(user => {
@@ -25,6 +26,7 @@ function login(req, res) {
 function validateToken(req, res, next) {
     if (!req.headers.authorization) {
         return res.status(401).send({ Error :'No token provided.'})
+
     }
     let token = req.headers.authorization.split(' ')[1]
     if (token === 'null') {
