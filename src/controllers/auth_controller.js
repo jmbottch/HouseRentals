@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const config = require('../config/auth_config');
+const config = require('../../config/auth_config');
 
 function login(req, res) {
     User.findOne( { name: req.body.name } )
