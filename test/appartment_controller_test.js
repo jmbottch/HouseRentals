@@ -23,13 +23,13 @@ describe('the appartmentController ', () => {
 
     // })
 
-    testAppartment = new Appartment ({
-        title : 'Test Appartment',
-        city : 'New York City',
-        address: 'Wall Street 420',
-        postalcode: '1940NC',
-        owner : testUser
-    })
+    // testAppartment = new Appartment ({
+    //     title : 'Test Appartment',
+    //     city : 'New York City',
+    //     address: 'Wall Street 420',
+    //     postalcode: '1940NC',
+    //     owner : "123456789"
+    // })
     const sql = require('mysql')
     //Create connection
     const db = sql.createConnection({
@@ -39,13 +39,15 @@ describe('the appartmentController ', () => {
         database: 'testrental'
     });
 
-    it('can get a list of appartments', function(done) {
-        done()
-    })
-
-    it('can create a new appartment', function(done) {
+    it.only('can get a list of appartments', (done) => {
+        db.connect()
         request(app)
-        .post('testAppartment')
-    })
+        .get('/api/appartments')
+        .end( (err, res) => {
+            expect(res.body).to.be.an('Array')
+            done()
+        })
+
+})
 
 })

@@ -1,6 +1,6 @@
-const AppartmentController = require('src/controllers/appartment-controller')
-const AuthController = require('src/controllers/auth_controller')
-const ReservationController = require('ser/controllers/reservation_controller')
+const AppartmentController = require('../src/controllers/appartment_controller')
+const AuthController = require('../src/controllers/auth_controller')
+const ReservationController = require('../src/controllers/reservation_controller')
 
 module.exports = (app) => {
 

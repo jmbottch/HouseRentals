@@ -18,6 +18,8 @@ module.exports = {
                 res.send(result)
             }
         })
+        // db.end(console.log('disconnected'))
+        
 
     },
     single(req) { //deze geen idee
@@ -28,8 +30,9 @@ module.exports = {
                 res.send(result)
             }
         })
+        // db.end(console.log('disconnected'))
     },
-    create(req,res) { //hier klopt waarschijnlijk geen hol van
+    create(req,res) {
         var appartment = {
             title : req.body.title,
             city : req.body.city,
@@ -48,6 +51,7 @@ module.exports = {
                 res.send(result, 'Appartment created', (200))
             }
         })
+        // db.end(console.log('disconnected'))
     },
     edit() {
         var appartment = {
