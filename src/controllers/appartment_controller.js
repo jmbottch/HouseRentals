@@ -6,7 +6,7 @@ const db = sql.createConnection({
     host : 'localhost',
     user : 'rental',
     password : 'localpassword',
-    database: 'verhuur'
+    database: 'rental'
 });
 
 module.exports = {
@@ -33,21 +33,32 @@ module.exports = {
         var appartment = {
             title : req.body.title,
             city : req.body.city,
-            street : req.body.street,
-            housenumber : req.body.housenumber,
+            address: req.body.address,
             postalcode: req.body.postalcode,
             owner: req.body.owner
         }
-        let sql = 'INSERT INTO appartments ( `' + appartment.title + '`, `' + appartment.city + '`, `' + appartment.street + '`, `' + appartment.housenumber + '`, `' + appartment.postalcode + '`, `' + appartment.owner + '`)'
+        let sql = 'INSERT INTO appartments(title, city, address, postalcode, owner_userid) VALUES ( "' + appartment.title + '", "' + appartment.city + '", "' +appartment.address + '", "'  + appartment.postalcode + '", "' + appartment.owner + '")'
         db.query(sql, (err, result) => {
-            if(err) throw err
+            if(err) {
+                if(err.errno === 1062) {
+                    res.send('This appartment already exists', (401))
+                }
+            }
             else {
-                res.send(result, 'Appartment created')
+                res.send(result, 'Appartment created', (200))
             }
         })
     },
     edit() {
+        var appartment = {
+            title: req.body.title,
+            city: req.body.city,
+            address: req.body.address,
+            postalcode: req.body.postalcode,
+            owner : req.body.owner
+        }
 
+        let sql = ''
     },
     delete() {
         
