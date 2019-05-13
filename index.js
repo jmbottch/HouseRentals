@@ -30,7 +30,7 @@ var app = express();
 
 //create Database
 app.get('/createdb', (req, res) => {
-    let sql = 'CREATE DATABASE verhuur'
+    let sql = 'CREATE DATABASE rental'
     db.query(sql, (err, result) => {
         if(err) throw err;
         res.send('database created')
