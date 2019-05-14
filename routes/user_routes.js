@@ -16,7 +16,7 @@ module.exports = (app) => {
       //edit an existing user while logged in
       app.put('/api/users/id=:id', UserController.edit)
       //delete an existing user while logged in
-      app.delete('/api/users/id=:id', AuthController.validateToken, UserController.delete)
+      app.delete('/api/users/id=:id',  UserController.delete)
 }
 
 // AuthController.validateToken,
