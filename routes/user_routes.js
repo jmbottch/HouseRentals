@@ -1,5 +1,5 @@
-const UserController = require('src/controllers/user_controller')
-const AuthController = require('src/controllers/auth_controller')
+const UserController = require('../src/controllers/user_controller')
+const AuthController = require('../src/controllers/auth_controller')
 
 module.exports = (app) => {
 
@@ -16,5 +16,7 @@ module.exports = (app) => {
       //edit an existing user while logged in
       app.put('/api/users/id=:id', AuthController.validateToken, UserController.edit)
       //delete an existing user while logged in
-      app.delete('/api/users/id=:id', AuthController.validateToken, UserController.delete)
+      app.delete('/api/users/id=:id', AuthController.validateToken,  UserController.delete)
 }
+
+// AuthController.validateToken,

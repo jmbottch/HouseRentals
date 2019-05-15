@@ -3,48 +3,84 @@
 const sql = require('mysql')
 //Create connection
 const db = sql.createConnection({
-    host : 'localhost',
-    user : 'rental',
-    password : 'localpassword',
-    database: 'verhuur'
+    host: 'localhost',
+    user: 'rental',
+    password: 'localpassword',
+    database: 'testrental'
 });
 
 module.exports = {
-    list() { //deze werkt
+    list(req, res) {
         let sql = 'SELECT * FROM appartments'
         db.query(sql, (err, result) => {
-            if(err) throw (err)
+            if (err) {
+                res.status(401).send({Error:'An error has occured'})
+            }
             else {
-                res.statusCode(200).send('Appartments returned')
+                res.status(200).send(result)
             }
         })
-
     },
-    single(req) { //deze geen idee
-        let sql = 'select * FROM appartments WHERE id=' + req.params.id
+    single(req,res) {
+        let sql = 'SELECT * FROM appartments WHERE appartmentid=' + req.params.id
         db.query(sql, (err, result) => {
-            if(err) throw err
-            else{
-                console.log(result)
+            if (err) throw err
+            else {
+                res.status(200).send(result)
             }
         })
     },
-    create(req,res) {
+    create(req, res) {
         var appartment = {
-            title : req.body.title,
-            city : req.body.city,
-            street : req.body.street,
-            housenumber : req.body.housenumber,
+            title: req.body.title,
+            city: req.body.city,
+            address: req.body.address,
             postalcode: req.body.postalcode,
-            reservations : [req.body.reservation]
+            owner: req.body.owner
         }
-        db.query()
+        let sql = 'INSERT INTO appartments(title, city, address, postalcode, owner_userid) VALUES ( "' + appartment.title + '", "' + appartment.city + '", "' + appartment.address + '", "' + appartment.postalcode + '", "' + appartment.owner + '")'
+        db.query(sql, (err, result) => {
+            if (err) {
+                if (err.errno === 1062) {
+                    res.status(401).send({Message:'This appartment already exists'})
+                }
+            }
+            else {
+                res.status(200).send({Message:'Appartment created'})
+                
+            }
+        })
     },
-    edit() {
+    edit(req, res) {
+        var id = req.params.id
+        var appartment = {
+            city: req.body.city,
+            address: req.body.address,
+            postalcode: req.body.postalcode,
+            owner: req.body.owner
+        }
+
+        let sql = 'UPDATE appartments SET city = "' + appartment.city + '", address = "' + appartment.address + '", postalcode = "' + appartment.postalcode + '" WHERE appartmentid = "' + id + '"'
+        db.query(sql, (err, result) => {
+            if (err) {
+                res.status(401).send({Error: 'Something went wrong'})
+            } else {
+                res.status(200).send({Message : 'Appartment edited'})
+            }
+        })
 
     },
-    delete() {
-        
+
+    delete(req, res) {
+        var id = req.params.id
+        let sql = 'DELETE FROM appartments WHERE appartmentid= ' + id
+        db.query(sql, (err, result) => {
+            if (err) {
+               res.status(401).send({Error: 'Something went wrong'})
+            } else {
+                res.status(200).send({Message: 'Appartment deleted'})
+            }
+        })
     }
 
 }
