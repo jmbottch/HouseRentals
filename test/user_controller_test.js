@@ -137,7 +137,12 @@ describe('the user_controller ', () => {
                     .set({ 'Authorization': token })
                     .end((err,res) => {
                         expect(res.statusCode).to.equal(200)
-                        done()
+                        request(app)
+                        .get('/api/users')
+                        .end((err,res) => {
+                            expect(res.body).to.be.empty
+                            done()
+                        })
                     })
                 })
                 

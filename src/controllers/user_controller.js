@@ -70,7 +70,7 @@ module.exports = {
         var user = {
             email : req.body.email,
             password : hashedPassword,
-            phonenumber : req.body.phonenumber,
+            phonenumber : "06 - " + req.body.phonenumber,
             firstname : req.body.firstname,
             lastname : req.body.lastname,
             city : req.body.city,
@@ -78,6 +78,7 @@ module.exports = {
             postalcode : req.body.postalcode
 
         }
+
         let sql = 'UPDATE users SET email = "' + user.email + '", password = "' + user.password + '", phonenumber = "' + user.phonenumber + '", firstname = "' + user.firstname + '", lastname = "' + user.lastname + '", city = "' + user.city + '", address = "' + user.address + '", postalcode = "' + user.postalcode + '" WHERE userid=' + id 
         db.query(sql, (err, result) => {
             if(err) {
