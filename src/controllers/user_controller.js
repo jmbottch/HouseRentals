@@ -3,12 +3,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const config = require('../../config/auth_config');
 const sql = require('mysql')
+
 //Create connection
 const db = sql.createConnection({
     host : 'localhost',
     user : 'rental',
     password : 'localpassword',
-    database: 'rental'
+    database: 'testrental'
 });
 
 module.exports = {
@@ -26,9 +27,9 @@ module.exports = {
         let sql = 'SELECT * FROM users WHERE userid = ' + id
         db.query(sql, (err, result) => {
             if(err) {
-                console.log(err)
+                res.status(401).send({Error:'an error has occured'})
             } else {
-                res.send(result, "user has been returned", (200))
+                res.status(200).send(result)
             }
         })
 
@@ -50,21 +51,26 @@ module.exports = {
         db.query(sql, (err, result) => {
             if(err) {
                 if(err.errno === 1062) {
-                    res.send('This email is already in use', (401))
+                    res.status(401).send({Error:'This email is already in use'})
+                } else {
+                    console.log(err)
                 }
             }
             else {
-                res.send(result, 'User created', (200))             
+                var token = jwt.sign({user}, config.secretkey, {
+                    expiresIn: 86400
+                })
+                res.status(200).send({Message:'User created', auth:true, token:token})            
             }
         })
     },
     edit(req, res) {
         var id = req.params.id
-
+        var hashedPassword = bcrypt.hashSync(req.body.password, 8);
         var user = {
             email : req.body.email,
-            password : req.body.password,
-            phonenumber : req.body.phonenumber,
+            password : hashedPassword,
+            phonenumber : "06 - " + req.body.phonenumber,
             firstname : req.body.firstname,
             lastname : req.body.lastname,
             city : req.body.city,
@@ -72,19 +78,28 @@ module.exports = {
             postalcode : req.body.postalcode
 
         }
+
         let sql = 'UPDATE users SET email = "' + user.email + '", password = "' + user.password + '", phonenumber = "' + user.phonenumber + '", firstname = "' + user.firstname + '", lastname = "' + user.lastname + '", city = "' + user.city + '", address = "' + user.address + '", postalcode = "' + user.postalcode + '" WHERE userid=' + id 
         db.query(sql, (err, result) => {
             if(err) {
-               console.log(err)
+              res.status(401).send({Error:'Something went wrong'})
             }
             else {
-                res.send(result, 'User edited', (200))             
+                res.status(200).send({Message: 'User edited'})            
             }
         })
 
     },
-    delete() {
-        
+    delete(req, res) {
+        var id = req.params.id
+        let sql = 'DELETE FROM users WHERE userid= ' + id
+        db.query(sql, (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.status(200).send({Message:'User deleted'})
+            }
+        })
     }
 
 }

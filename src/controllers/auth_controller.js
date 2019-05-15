@@ -16,7 +16,7 @@ const db = sql.createConnection({
     host: 'localhost',
     user: 'rental',
     password: 'localpassword',
-    database: 'rental'
+    database: 'testrental'
 });
 module.exports = {
     login(req, res) {
@@ -35,11 +35,11 @@ module.exports = {
                     var token = jwt.sign({user}, config.secretkey, {
                         expiresIn: 86400
                     })
-                    res.send('Logged in', { auth: true, token: token }, (200))
+                    res.status(200).send({ auth: true, token: token });
                    
                 }
-                if (user.password !== result[0].password) {
-                    res.send('Password does not match', (401))
+                if (!passwordisValid) {
+                    res.status(401).send({Message: 'Password does not match'})
                 
                 }
     

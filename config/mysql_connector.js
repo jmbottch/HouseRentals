@@ -1,12 +1,36 @@
 var config = require('./mysql_config')
-var mySql = require('mysql')
+var sql = require('mysql')
 
-var connection = mySql.createConnection(config.env)
+module.exports = {
+    db() {
+        const db = sql.createConnection({
+            host : 'localhost',
+            user : 'rental',
+            password : 'localpassword',
+            database: 'rental'
+        });
+        db.connect((err) => {
+            if(err) console.log(err)
+            else {
+                console.log('connected to db')
+            }
+        })
+    },
+    
+    test_db() {
+        const test_db = sql.createConnection({
+            host : 'localhost',
+            user : 'rental',
+            password : 'localpassword',
+            database: 'testrental'
+        });
+    
+        test_db.connect((err) => {
+            if(err) console.log(err)
+            else {
+                console.log('connected to test_db')
+            }
+        })
+    }
 
-connection.connect(function(err) {
-    if(err) throw(err)
-    console.log("connected to database")
-})
-module.exports ={ 
-    connection
 }
