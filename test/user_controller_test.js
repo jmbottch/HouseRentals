@@ -15,7 +15,7 @@ describe('the user_controller ', () => {
     var user = {
         email: "test@registerTest.com",
         password: "testpassword",
-        phonenumber: "0637322184",
+        phonenumber: "37322184",
         firstname: "test",
         lastname: "user",
         city: "Rotterdam",
@@ -25,7 +25,7 @@ describe('the user_controller ', () => {
     var edited = {
         email: "test@registerTest.com",
         password: "testpassword",
-        phonenumber: "578946578",
+        phonenumber: "37322184",
         firstname: "edited",
         lastname: "user",
         city: "Breda",
