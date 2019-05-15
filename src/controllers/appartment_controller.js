@@ -19,8 +19,8 @@ module.exports = {
             }
         })
     },
-    single(req) {
-        let sql = 'SELECT * FROM appartments WHERE id=' + req.params.id
+    single(req, res) {
+        let sql = 'SELECT * FROM appartments WHERE appartmentid=' + req.params.id
         db.query(sql, (err, result) => {
             if (err) throw err
             else {
@@ -39,6 +39,7 @@ module.exports = {
         let sql = 'INSERT INTO appartments(title, city, address, postalcode, owner_userid) VALUES ( "' + appartment.title + '", "' + appartment.city + '", "' + appartment.address + '", "' + appartment.postalcode + '", "' + appartment.owner + '")'
         db.query(sql, (err, result) => {
             if (err) {
+                console.log(err)
                 if (err.errno === 1062) {
                     res.send('This appartment already exists', (401))
                 }
