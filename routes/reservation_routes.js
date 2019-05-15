@@ -9,11 +9,11 @@ module.exports = (app) => {
     //get the data of a single reservation
     app.get('/api/appartments/id=:id/reservations/reservationid=:id', ReservationController.single)
     //create a reservation while logged in
-    app.post('/api/appartments/id=:id/reservations', ReservationController.create)
+    app.post('/api/appartments/id=:id/reservations', AuthController.validateToken, ReservationController.create)
     //edit an existing reservation while logged in
-    app.put('/api/appartments/id=:id/reservations/reservationid=:id', ReservationController.edit)
+    app.put('/api/appartments/id=:id/reservations/reservationid=:id', AuthController.validateToken, ReservationController.edit)
     //delete an existing reservation while logged in
-    app.delete('/api/appartments/id=:id/reservations/reservationid=:id', ReservationController.delete)
+    app.delete('/api/appartments/id=:id/reservations/reservationid=:id', AuthController.validateToken, ReservationController.delete)
 }
 
 // AuthController.validateToken, 

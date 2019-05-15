@@ -6,6 +6,8 @@ var env = {
     password : 'localpassword',
     database: 'testrental'
 }
+
+
  
 module.exports = {
     env

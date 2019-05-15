@@ -10,7 +10,7 @@ module.exports = (app) => {
     //post an appartment while logged in
     app.post('/api/appartments', AuthController.validateToken, AppartmentController.create) 
     //edit and appartment while logged in
-    app.put('/api/appartments/id=:id', AppartmentController.edit) //AuthController.validateToken
+    app.put('/api/appartments/id=:id', AuthController.validateToken, AppartmentController.edit) 
     //delete an existing appartment
-    app.delete('/api/appartments/id=:id', AppartmentController.delete) //AuthController.validateToken,
+    app.delete('/api/appartments/id=:id', AuthController.validateToken, AppartmentController.delete) 
 }

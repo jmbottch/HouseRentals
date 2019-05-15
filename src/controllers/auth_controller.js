@@ -8,6 +8,7 @@ const router = express.Router()
 const bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+const moment = require('moment')
 
 
 //Create connection
@@ -30,11 +31,12 @@ module.exports = {
             } else {
                 if (user.password === result[0].password) {
     
-                    var token = jwt.sign({ id: result.userid }, config.secretkey, {
+                    var token = jwt.sign({user}, config.secretkey, {
                         expiresIn: 86400
-                    })
-                    res.send('Logged in', { auth: true, token: token }, (200))
+                    }, (err, token))
+                    res.send('Logged in ' + 'Token: ' + token, { auth: true, token: token }, (200))
                     console.log('Kech', token)
+                    console.log(result[0].userid)
                 }
                 if (user.password !== result[0].password) {
                     res.send('Password does not match', (401))
@@ -46,21 +48,19 @@ module.exports = {
         })
     },
     
-     validateToken(req, res, next) {
+    validateToken(req, res, next) {
         if (!req.headers.authorization) {
-            return res.status(401).send({ Error: 'No token provided.' })
-    
+            return res.status(401).send({ Error :'No token provided.'})
         }
         let token = req.headers.authorization.split(' ')[1]
-        console.log(token)
         if (token === 'null') {
-            return res.status(401).send({ Error: 'No token provided.' })
+            return res.status(401).send({ Error :'No token provided.'})
         }
-        jwt.verify(token, config.secretkey, function (err, decoded) {
-            console.log(decoded)
-            if (err) return res.status(401).send({ Error: 'Token is invalid.' })
-            if (decoded) next();
+        jwt.verify(token, config.secretkey, function(err, decoded) {            
+            if (err) return res.status(401).send({ Error :'Token is invalid.'})
+            if (decoded) next();          
         });
-    }
+    },
+   
 }
  

@@ -10,7 +10,8 @@ const db = sql.createConnection({
 });
 module.exports = {
     list(req, res) {
-        let sql = 'SELECT * FROM reservations'
+        var id = req.params.id
+        let sql = 'SELECT * FROM reservations WHERE appertmentid = "'  + id + '"'
         db.query(sql, (err, result) => {
             if (err) throw (err)
             else {
@@ -31,9 +32,9 @@ module.exports = {
     create(req,res) {
         var reservation = {
             userid : req.body.userid,
-            startDate : req.body.startdate, //DATES AS YYY-MM-DD
-            endDate : req.body.enddate,
-            appartmentid : req.body.appartmentid
+            startDate : req.body.startdate + "T", //DATES AS YYY-MM-DD
+            endDate : req.body.enddate +"T",
+            appartmentid : req.params.id
         }
         let sql = 'INSERT INTO reservations(userid, start_date, end_date, appertmentId) VALUES ("' + reservation.userid + '", "' + reservation.startDate + '", "' + reservation.endDate + '", "' + reservation.appartmentid + '")'
         db.query(sql, (err,result) => {
@@ -50,9 +51,8 @@ module.exports = {
         var reservation = {
             startDate : req.body.startdate,
             endDate : req.body.enddate,
-            appartmentid : req.body.appartmentid
         }
-        let sql = 'UPDATE reservations SET start_date = "' + reservation.startDate + + '", end_date = "' + reservation.end + '", appertmentId = "' + reservation.appartmentid + '" WHERE reservationid = "'  + id + '"'
+        let sql = 'UPDATE reservations SET start_date = "' + reservation.startDate + + '", end_date = "' + reservation.endDate + '" WHERE reservationid = "'  + id + '"'
         db.query(sql, (err,result) => {
             if(err) {
                 console.log(err)

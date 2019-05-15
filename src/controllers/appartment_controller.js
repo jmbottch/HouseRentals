@@ -19,8 +19,8 @@ module.exports = {
             }
         })
     },
-    single(req) {
-        let sql = 'SELECT * FROM appartments WHERE id=' + req.params.id
+    single(req, res) {
+        let sql = 'SELECT * FROM appartments WHERE appartmentid=' + req.params.id
         db.query(sql, (err, result) => {
             if (err) throw err
             else {
