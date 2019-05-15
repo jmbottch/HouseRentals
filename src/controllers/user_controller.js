@@ -37,7 +37,11 @@ module.exports = {
     create(req, res) {
         if (req.body.phonenumber.length < 8 || req.body.phonenumber.length > 8) {
             res.status(401).send({ Message: 'Phonenumber is invalid' })
-        } else {
+        } 
+        if (req.body.postalcode.length < 6 || req.body.postalcode.lenght > 6) {
+            res.status(401).send({Error:'Postalcode is invalid'})
+        }
+        else {
 
             var hashedPassword = bcrypt.hashSync(req.body.password, 8);
             var user = {
