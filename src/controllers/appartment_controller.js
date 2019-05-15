@@ -6,25 +6,27 @@ const db = sql.createConnection({
     host: 'localhost',
     user: 'rental',
     password: 'localpassword',
-    database: 'rental'
+    database: 'testrental'
 });
 
 module.exports = {
     list(req, res) {
         let sql = 'SELECT * FROM appartments'
         db.query(sql, (err, result) => {
-            if (err) throw (err)
+            if (err) {
+                res.status(401).send({Error:'An error has occured'})
+            }
             else {
-                res.send(result)
+                res.status(200).send(result)
             }
         })
     },
-    single(req, res) {
+    single(req,res) {
         let sql = 'SELECT * FROM appartments WHERE appartmentid=' + req.params.id
         db.query(sql, (err, result) => {
             if (err) throw err
             else {
-                res.send(result)
+                res.status(200).send(result)
             }
         })
     },
@@ -39,31 +41,31 @@ module.exports = {
         let sql = 'INSERT INTO appartments(title, city, address, postalcode, owner_userid) VALUES ( "' + appartment.title + '", "' + appartment.city + '", "' + appartment.address + '", "' + appartment.postalcode + '", "' + appartment.owner + '")'
         db.query(sql, (err, result) => {
             if (err) {
-                console.log(err)
                 if (err.errno === 1062) {
-                    res.send('This appartment already exists', (401))
+                    res.status(401).send({Message:'This appartment already exists'})
                 }
             }
             else {
-                res.send(result, 'Appartment created', (200))
+                res.status(200).send({Message:'Appartment created'})
+                
             }
         })
     },
     edit(req, res) {
+        var id = req.params.id
         var appartment = {
-            title: req.body.title,
             city: req.body.city,
             address: req.body.address,
             postalcode: req.body.postalcode,
             owner: req.body.owner
         }
 
-        let sql = 'UPDATE appartments SET city = "' + appartment.city + '", address = "' + appartment.address + '", postalcode = "' + appartment.postalcode + '" WHERE title = "' + appartment.title + '"'
+        let sql = 'UPDATE appartments SET city = "' + appartment.city + '", address = "' + appartment.address + '", postalcode = "' + appartment.postalcode + '" WHERE appartmentid = "' + id + '"'
         db.query(sql, (err, result) => {
             if (err) {
-                console.log(err)
+                res.status(401).send({Error: 'Something went wrong'})
             } else {
-                res.send(result, 'Appartment edited', (200))
+                res.status(200).send({Message : 'Appartment edited'})
             }
         })
 
@@ -74,9 +76,9 @@ module.exports = {
         let sql = 'DELETE FROM appartments WHERE appartmentid= ' + id
         db.query(sql, (err, result) => {
             if (err) {
-                console.log(err)
+               res.status(401).send({Error: 'Something went wrong'})
             } else {
-                res.send(result, 'Appartment deleted', (200))
+                res.status(200).send({Message: 'Appartment deleted'})
             }
         })
     }
