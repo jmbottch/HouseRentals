@@ -2,29 +2,39 @@
 var express = require("express")
 var bodyParser = require("body-parser")
 var sql = require("mysql")
+
 //import route files
 const appartmentRoutes = require('./routes/appartment_routes')
 const reservationRoutes = require('./routes/reservation_routes')
 const userRoutes = require('./routes/user_routes')
 
-//Create connection
+//import connections
+connectionconfig = require('./config/mysql_connector')
+
+// var env = process.argv[2] || 'dev';
+
+// switch(env) {
+//     case 'start' : 
+//         connectionconfig.db()
+//         break
+//     case 'test' :
+//         connectionconfig.test_db()
+//         break   
+    
+// }
+
 const db = sql.createConnection({
     host : 'localhost',
     user : 'rental',
     password : 'localpassword',
-    database: 'rental'
+    database: 'testrental'
 });
-
-//Connect to the db
 db.connect((err) => {
-    if(err) {
-        console.log(err)
-    }
+    if(err) console.log(err)
     else {
-        console.log('MySql Connected')
+        console.log('connected to db')
     }
 })
-
 //Set app variable
 var app = express();
 
@@ -56,7 +66,7 @@ app.get('/createAppartmentsTable', (req, res) => {
 })
 
 app.get('/createReservationTable', (req, res) => {
-    let sql = 'CREATE TABLE reservations(reservationid INTEGER AUTO_INCREMENT PRIMARY KEY UNIQUE, appertmentId INTEGER(20), userid INTEGER(20), start_date DATETIME, end_date DATETIME)'
+    let sql = 'CREATE TABLE reservations(reservationid INT AUTO_INCREMENT PRIMARY KEY UNIQUE, appertmentId INTEGER, userid INTEGER, start_date DATETIME, end_date DATETIME)'
     db.query(sql, (err, result) => {
         if (err) throw err
         res.send('reservations table created')
