@@ -29,19 +29,18 @@ module.exports = {
             if (err) {
                 console.log(err)
             } else {
-                if (user.password === result[0].password) {
+                var passwordisValid = bcrypt.compareSync(req.body.password, result[0].password)
+                if (passwordisValid) {
     
                     var token = jwt.sign({user}, config.secretkey, {
                         expiresIn: 86400
-                    }, (err, token))
-                    res.send('Logged in ' + 'Token: ' + token, { auth: true, token: token }, (200))
-                    console.log('Kech', token)
-                    console.log(result[0].userid)
+                    })
+                    res.send('Logged in', { auth: true, token: token }, (200))
+                   
                 }
                 if (user.password !== result[0].password) {
                     res.send('Password does not match', (401))
-                    console.log(user.password)
-                    console.log(result[0].password)
+                
                 }
     
             }

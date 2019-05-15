@@ -34,9 +34,10 @@ module.exports = {
 
     },
     create(req,res) {
+        var hashedPassword = bcrypt.hashSync(req.body.password, 8);
         var user = {
             email : req.body.email,
-            password : req.body.password,
+            password : hashedPassword,
             phonenumber : req.body.phonenumber,
             firstname : req.body.firstname,
             lastname : req.body.lastname,
